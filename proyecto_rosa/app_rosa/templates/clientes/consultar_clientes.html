@@ -1,0 +1,45 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li class="active"><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>E-mail</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id_cliente }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                </tr>   
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+        
+{% endblock %}

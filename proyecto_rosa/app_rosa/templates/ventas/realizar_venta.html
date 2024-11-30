@@ -1,0 +1,27 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li class="active"><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+
+<div id="main">
+    <h3>Realizar venta</h3>
+    <form>
+
+    </form>
+</div>
+        
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li><a href="{% url 'ventas/ %}">Ventas</a></li>
+        <li class="active"><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+    <ul class="links">
+        <li><h3>Consultar clientes</h3></li>
+        <li><h3>Registrar cliente</h3></li>
+        <li><h3>Modificar cliente</h3></li>
+    </ul>
+</div>
+        
+{% endblock %}

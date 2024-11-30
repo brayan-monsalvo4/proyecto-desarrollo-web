@@ -1,0 +1,38 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li class="active"><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+
+    <h2>Algoritmo de Kalman</h2>
+    <h3>{{ nombre_producto }}</h3>
+
+    <img src="{% static nombre_plot %}">
+
+    {% if pendiente == "positiva" %}
+        <h2>Pendiente: <p style="color: green;">Positiva</p>
+            <p style="color: royalblue">Conviene comprar nuevas impresoras, ya que la tendencia es que aumente el número de impresoras compradas.</p>
+        </h2>
+            
+    {% else %}
+        <h2>Pendiente: <p style="color: red">Negativa</p>
+            <p style="color: royalblue">No conviene comprar nuevas impresoras, ya que la tendencia es que no aumente el número de impresoras compradas.</p>
+        </h2>
+    {% endif %}
+</div>
+        
+{% endblock %}

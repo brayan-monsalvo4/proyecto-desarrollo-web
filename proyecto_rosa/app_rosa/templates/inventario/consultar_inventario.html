@@ -1,0 +1,58 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li class="active"><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID impresora</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Tipo</th>
+                    <th>Anio lanzamiento</th>
+                    <th>Volumen de construccion</th>
+                    <th>Precio</th>
+                    <th>Moneda</th>
+                    <th>Stock</th>
+                    <th>Imagen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for impresora in impresoras %}
+                <tr>
+                    <td>{{ impresora.id_impresora }}</td>
+                    <td>{{ impresora.nombre }}</td>
+                    <td>{{ impresora.marca }}</td>
+                    <td>{{ impresora.tipo }}</td>
+                    <td>{{ impresora.anio_lanzamiento }}</td>
+                    <td>{{ impresora.volumen_construccion }}</td>
+                    <td>{{ impresora.precio }}</td>
+                    <td>{{ impresora.moneda }}</td>
+                    <td>{{ impresora.stock }}</td>
+                    <td>
+                        <img src="{{ impresora.url_imagen }} " width="250" height="250">
+                    </td>
+                </tr>   
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+        
+{% endblock %}

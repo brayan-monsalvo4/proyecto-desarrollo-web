@@ -1,0 +1,33 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li class="active"><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+<script>
+    function mostrarAlerta() {
+            alert("Se generaron ventas aleatorias!");
+        }
+</script>
+
+<div id="main">
+    <h3><a href="{% url 'ventas/consultar_ventas/' %}">Consultar Ventas</a></h3>
+    <h3><a>Realizar Venta</a></h3>
+    <form action="{% url 'ventas/generar_ventas_aleatorias/' %}" type="submit" method="get">
+        <button>Generar Ventas Aleatorias</button>
+    </form>
+</div>
+        
+{% endblock %}

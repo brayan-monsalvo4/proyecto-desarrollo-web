@@ -1,0 +1,53 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li class="active"><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Venta</th>
+                    <th>Nombre Impresora</th>
+                    <th>Nombre Cliente</th>
+                    <th>Fecha de Venta</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                    <th>Metodo de Pago</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ venta.id_venta }}</td>
+                    <td>{{ venta.id_impresora.nombre }}</td>
+                    <td>{{ venta.id_cliente.nombre }}</td>
+                    <td>{{ venta.fecha_venta }}</td>
+                    <td>{{ venta.cantidad }}</td>
+                    <td>{{ venta.id_impresora.precio }}</td>
+                    <td>{{ venta.total }}</td>
+                    <td>{{ venta.metodo_pago }}</td>
+                </tr>   
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+        
+{% endblock %}

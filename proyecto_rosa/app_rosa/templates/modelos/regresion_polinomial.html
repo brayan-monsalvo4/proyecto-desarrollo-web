@@ -1,0 +1,57 @@
+{% extends "template2.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+
+<nav id="nav">
+    <ul class="links">
+        <li><a href="{% url 'inventario/' %}">Inventario</a></li>
+        <li class="active"><a href="{% url 'analisis/' %}">Analisis</a></li>
+        <li><a href="{% url 'ventas/' %}">Ventas</a></li>
+        <li><a href="{% url 'clientes/' %}">Clientes</a></li>
+    </ul>
+</nav>
+
+
+
+<div id="main">
+    <h2>Regresión Polinomial</h3>
+    <h3>{{ nombre_producto }}</h3>
+    
+    
+    <img src="{% static nombre_plot %}">
+    
+    {% if pendiente == "positiva" %}
+        <h2>Pendiente: <p style="color: green">Positiva</p>
+            <p style="color:royalblue">Conviene comprar nuevas impresoras, ya que la tendencia es que aumente el número de impresoras compradas.</p>
+        </h2>
+    {% else %}
+        <h2>Pendiente: <p style="color: red">Negativa</p> 
+            <p style="color: royalblue">No conviene comprar nuevas impresoras, ya que la tendencia es que no aumenta el número de impresoras compradas.</p>
+        </h2>
+    {% endif %}
+
+    <h3>Media de X: {{ media_x }} 
+        <p style="color: royalblue">Indica los dias en promedio en los cuales se compra una impresora</p>
+    </h3>
+
+    <h3>Media de Y: {{ media_y }} 
+        <p style="color:royalblue">Indica las impresoras que se compran en promedio</p>
+    </h3>
+
+    <h3>Desviación estándar de X: {{ desviacion_estandar_x }} 
+        <p style="color: royalblue">Indica que tan separados están los días respecto al promedio. si la desviación es alta, entonces los días entre compras varían mucho</p>
+    </h3>
+
+    <h3>Desviación estándar de Y: {{ desviacion_estandar_y }} 
+        <p style="color: royalblue">Indica que tan separados están la cantidad de compras respecto al promedio. si la desviación es alta, entonces la cantidad de compras varia mucho.</p>
+    </h3>
+    
+
+</div>
+        
+{% endblock %}
