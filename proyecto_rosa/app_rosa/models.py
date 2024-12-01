@@ -58,6 +58,31 @@ class Venta(models.Model):
     class Meta:
         db_table = 'ventas'
 
+    def to_xml(self):
+        venta = etree.Element("venta")
+
+        etree.SubElement(venta, "id_venta").text = str(self.id_venta)
+        etree.SubElement(venta, "id_cliente").text = str(self.id_cliente.id_cliente)
+        etree.SubElement(venta, "id_impresora").text = str(self.id_impresora.id_impresora)
+        etree.SubElement(venta, "fecha_venta").text = str(self.fecha_venta)
+        etree.SubElement(venta, "cantidad").text = str(self.cantidad)
+        etree.SubElement(venta, "precio_unitario").text = str(self.precio_unitario)
+        etree.SubElement(venta, "total").text = str(self.total)
+        etree.SubElement(venta, "metodo_pago").text = self.metodo_pago
+
+        return venta
+    
+    @classmethod
+    def get_xml_collection(cls, ventas):
+        venta_raiz = etree.Element("ventas")
+
+        for venta in ventas:
+            venta_raiz.append(
+                venta.to_xml()
+            )
+
+        return venta_raiz
+
     def save(self, *args, **kwargs):
         # Calcular el total automáticamente
         self.total = self.cantidad * self.precio_unitario

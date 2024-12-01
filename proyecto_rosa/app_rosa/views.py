@@ -120,6 +120,17 @@ def consultar_ventas(request):
 
     return render(request, "ventas/consultar_ventas.html", context)
 
+def descargar_ventas(request):
+    if not request.method == "GET":
+        return render(request, "ventas/consultar_ventas.html")
+    
+    raiz = Venta.get_xml_collection( Venta.objects.all() )
+
+    response = HttpResponse(etree.tostring(raiz, pretty_print=True, encoding="utf-8", xml_declaration=True), content_type="application/xml")
+    response["Content-Disposition"] = "attatchment; filename=ventas.xml"
+
+    return response
+
 
 #-----clientes------
 
