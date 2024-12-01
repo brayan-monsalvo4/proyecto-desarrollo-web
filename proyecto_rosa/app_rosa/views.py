@@ -17,7 +17,9 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.metrics import classification_report
-import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use("Agg")
+from matplotlib import pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import LabelEncoder
 from pykalman import KalmanFilter
