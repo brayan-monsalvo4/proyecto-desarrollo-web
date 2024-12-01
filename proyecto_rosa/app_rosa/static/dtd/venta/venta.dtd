@@ -1,0 +1,10 @@
+<!ELEMENT ventas (venta+)>
+<!ELEMENT venta (id_venta, id_cliente, id_impresora, fecha_venta, cantidad, precio_unitario, total, metodo_pago)>
+<!ELEMENT id_venta (#PCDATA)>
+<!ELEMENT id_cliente (#PCDATA)>
+<!ELEMENT id_impresora (#PCDATA)>
+<!ELEMENT fecha_venta (#PCDATA)>
+<!ELEMENT cantidad (#PCDATA)>
+<!ELEMENT precio_unitario (#PCDATA)>
+<!ELEMENT total (#PCDATA)>
+<!ELEMENT metodo_pago (#PCDATA)>
