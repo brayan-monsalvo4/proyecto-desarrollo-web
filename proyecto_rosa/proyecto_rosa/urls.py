@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.login, name='login'),
     path("inventario/", views.inventario, name="inventario/"),
     path("inventario/consultar_inventario/", views.consultar_inventario, name="inventario/consultar_inventario/"),
+    path("inventario/descargar_inventario/", views.descargar_inventario, name="inventario/descargar_inventario/"),
     path("analisis/", views.analisis, name="analisis/"),
     path("modelos/regresion_lineal/", views.regresion_lineal, name="modelos/regresion_lineal/"),
     path("modelos/regresion_polinomial/", views.regresion_polinomial, name="modelos/regresion_polinomial/"),

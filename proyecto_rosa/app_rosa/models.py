@@ -1,4 +1,5 @@
 from django.db import models
+from lxml import etree
 
 class Impresora(models.Model):
     id_impresora = models.AutoField(primary_key=True)
@@ -17,6 +18,32 @@ class Impresora(models.Model):
 
     def __str__(self):
         return f"{self.marca} {self.nombre}"
+    
+    def to_xml(self):
+        impresora = etree.Element("impresora")
+
+        etree.SubElement(impresora, "nombre").text = self.nombre
+        etree.SubElement(impresora, "marca").text = self.marca
+        etree.SubElement(impresora, "tipo").text = self.tipo
+        etree.SubElement(impresora, "anio_lanzamiento").text = str(self.anio_lanzamiento)
+        etree.SubElement(impresora, "volumen_construccion").text = self.volumen_construccion
+        etree.SubElement(impresora, "precio").text = str(self.precio)
+        etree.SubElement(impresora, "moneda").text = self.moneda
+        etree.SubElement(impresora, "url_imagen").text = self.url_imagen
+        etree.SubElement(impresora, "stock").text = str(self.stock)
+
+        return impresora
+    
+    @classmethod
+    def get_xml_collecion(cls, impresoras):
+        impresora_raiz = etree.Element("impresoras")
+
+        for impresora in impresoras:
+            impresora_raiz.append(
+                impresora.to_xml()
+            )
+        
+        return impresora_raiz
     
 class Venta(models.Model):
     id_venta = models.AutoField(primary_key=True)

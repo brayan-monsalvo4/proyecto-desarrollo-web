@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import LabelEncoder
 from pykalman import KalmanFilter
-
+from lxml import etree
 
 
 def _genera_fecha_aleatoria(fecha_inicio, fecha_fin):
@@ -151,6 +151,19 @@ def consultar_inventario(request):
     }
 
     return render(request, "inventario/consultar_inventario.html", context)
+
+def descargar_inventario(request):
+    if not request.method == "GET":
+        return render(request, "inventario/consultar_inventario.html")
+    
+    raiz = Impresora.get_xml_collecion( Impresora.objects.all() )
+
+    response = HttpResponse(etree.tostring(raiz, pretty_print=True, encoding="utf-8", xml_declaration=True), content_type="application/xml")
+
+    response["Content-Disposition"] = "attachment; filename=impresoras.xml"
+    
+    return response
+
 
 #--------analisis---------
 
