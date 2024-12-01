@@ -24,6 +24,7 @@ import seaborn as sns
 from sklearn.preprocessing import LabelEncoder
 from pykalman import KalmanFilter
 from lxml import etree
+from django.views.decorators.csrf import csrf_exempt
 
 
 def _genera_fecha_aleatoria(fecha_inicio, fecha_fin):
@@ -188,6 +189,53 @@ def descargar_inventario(request):
     
     return response
 
+@csrf_exempt
+def registrar_inventario(request):
+    if not request.method == "POST":
+        return render(request, "inventario.html")
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Impresora.validar_dtd(xml_etree=xml, dtd_path="app_rosa/static/dtd/impresora/registrar_impresora.dtd")
+
+        Impresora.registrar_inventario_desde_xml(xml)
+
+        return HttpResponse(valido, status=200)
+
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
+
+@csrf_exempt
+def eliminar_inventario(request):
+    if not request.method == "DELETE":
+        return HttpResponse("Metodo incorrecto!", status=400)
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Impresora.validar_dtd(xml_etree=xml, dtd_path="app_rosa/static/dtd/impresora/eliminar_impresora.dtd")
+
+        Impresora.eliminar_inventario_desde_xml(xml)
+
+        return HttpResponse(valido, status=200)
+    
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
+    
+@csrf_exempt
+def modificar_inventario(request):
+    if not request.method == "PATCH":
+        return HttpResponse("Metodo incorrecto!", status=400)
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Impresora.validar_dtd(xml_etree=xml, dtd_path="app_rosa/static/dtd/impresora/modificar_impresora.dtd")
+
+        Impresora.modificar_inventario_desde_xml(xml_tree=xml)
+
+        return HttpResponse(valido, status=200)
+    
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
 
 #--------analisis---------
 

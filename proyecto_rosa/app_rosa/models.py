@@ -1,5 +1,8 @@
 from django.db import models
 from lxml import etree
+from django.db import transaction
+from decimal import Decimal
+from django.db.utils import IntegrityError
 
 class Impresora(models.Model):
     id_impresora = models.AutoField(primary_key=True)
@@ -45,6 +48,67 @@ class Impresora(models.Model):
         
         return impresora_raiz
     
+    @classmethod
+    def validar_dtd(cls, xml_etree, dtd_path):
+        dtd = etree.DTD(open(dtd_path, "rb"))
+
+        try:
+            dtd.assertValid(xml_etree)
+
+            return True
+
+        except Exception as e:
+            error_trace = ""
+            for error in dtd.error_log:
+                print(error)
+                error_trace += f"Line {error.line}: {error.message}\n"
+
+            raise Exception(error_trace)
+        
+        
+    @classmethod
+    def registrar_inventario_desde_xml(cls, xml_etree):
+        with transaction.atomic():
+            for producto in xml_etree:
+                impresora = cls.objects.create(
+                    nombre=producto[0].text,
+                    marca=producto[1].text,
+                    tipo=producto[2].text,
+                    anio_lanzamiento=int(producto[3].text),
+                    volumen_construccion=producto[4].text,
+                    precio=Decimal(producto[5].text),
+                    moneda=producto[6].text,
+                    url_imagen=producto[7].text,
+                    stock=(int(producto[8].text) if producto.find("stock") != None else 20)
+                )
+
+                impresora.save()
+
+    @classmethod
+    def eliminar_inventario_desde_xml(cls, xml_tree):
+        with transaction.atomic():
+            for id in xml_tree:
+                cls.objects.filter(id_impresora=id.text).delete()
+
+    @classmethod
+    def modificar_inventario_desde_xml(cls, xml_tree):
+        with transaction.atomic():
+            for producto in xml_tree:
+                impresora = cls.objects.filter(id_impresora=producto[0].text)[0]
+
+                impresora.nombre = str(producto.find("nombre").text) if producto.find("nombre") != None else impresora.nombre
+                impresora.marca = str(producto.find("marca").text) if producto.find("marca") != None else impresora.marca
+                impresora.tipo = str(producto.find("tipo").text) if producto.find("tipo") != None else impresora.tipo
+                impresora.anio_lanzamiento = int(producto.find("anio_lanzamiento").text) if producto.find("anio_lanzamiento") != None else impresora.anio_lanzamiento
+                impresora.volumen_construccion = str(producto.find("volumen_construccion").text) if producto.find("volumen_construccion") != None else impresora.volumen_construccion
+                impresora.precio = Decimal(producto.find("precio").text) if producto.find("precio") != None else impresora.precio
+                impresora.moneda = str(producto.find("moneda").text) if producto.find("moneda") != None else impresora.moneda
+                impresora.url_imagen = str(producto.find("url_imagen").text) if producto.find("url_imagen") != None else impresora.url_imagen
+                impresora.stock = int(producto.find("stock").text) if producto.find("stock") != None else impresora.stock
+
+                impresora.save() 
+                
+
 class Venta(models.Model):
     id_venta = models.AutoField(primary_key=True)
     id_impresora = models.ForeignKey('Impresora', on_delete=models.CASCADE, db_column='id_impresora')
