@@ -60,9 +60,24 @@ def login(request):
 def ventas(request):
     return render(request, "ventas.html")
 
-def realizar_venta(request):
+@csrf_exempt
+def registrar_ventas(request):
+    if not request.method == "POST":
+        return HttpResponse("Metodo incorrecto!", status=400)
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Venta.validar_dtd(xml_tree=xml, dtd_path="app_rosa/static/dtd/venta/registrar_ventas.dtd")
 
-    return render(request, "realizar_venta.html")
+        print(valido)
+
+        Venta.registrar_venta_desde_xml(xml_tree=xml)
+
+        return HttpResponse(valido, status=200)
+    
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
+
 
 def generar_ventas_aleatorias(request):
     impresoras = list(Impresora.objects.all())

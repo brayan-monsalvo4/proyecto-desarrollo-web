@@ -146,6 +146,39 @@ class Venta(models.Model):
             )
 
         return venta_raiz
+    
+    @classmethod
+    def validar_dtd(cls, xml_tree, dtd_path):
+        dtd = etree.DTD(open(dtd_path, "rb"))
+
+        try:
+            dtd.assertValid(xml_tree)
+            print("dtd valido")
+            return True
+        
+        except Exception:
+            error_trace = ""
+            for error in dtd.error_log:
+                print(error)
+                error_trace += f"Line {error.line}: {error.message}."
+                
+            raise Exception(error_trace)
+        
+    @classmethod
+    def registrar_venta_desde_xml(cls, xml_tree):
+        with transaction.atomic():
+            for sale in xml_tree:
+                venta = cls.objects.create(
+                    id_cliente_id=int(sale[0].text),
+                    id_impresora_id=int(sale[1].text),
+                    fecha_venta=str(sale[2].text),
+                    cantidad=int(sale[3].text),
+                    precio_unitario=Decimal(sale[4].text),
+                    total=Decimal(sale[5].text),
+                    metodo_pago=str(sale[6].text)
+                )
+
+                venta.save()
 
     def save(self, *args, **kwargs):
         # Calcular el total automáticamente
