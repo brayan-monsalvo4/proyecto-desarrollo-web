@@ -37,5 +37,8 @@ urlpatterns = [
     path("ventas/generar_ventas_aleatorias/", views.generar_ventas_aleatorias, name="ventas/generar_ventas_aleatorias/"),
     path("clientes/", views.clientes, name="clientes/"),
     path("clientes/consultar_clientes/", views.consultar_clientes, name="clientes/consultar_clientes/"),
-    path("clientes/descargar_clientes/", views.descargar_clientes, name="clientes/descargar_clientes/")
+    path("clientes/descargar_clientes/", views.descargar_clientes, name="clientes/descargar_clientes/"),
+    path("clientes/registrar_clientes/", views.registrar_clientes, name="clientes/registrar_clientes/"),
+    path("clientes/eliminar_clientes/", views.eliminar_clientes, name="clientes/eliminar_clientes/"),
+    path("clientes/modificar_clientes/", views.modificar_clientes, name="clientes/modificar_clientes/")
 ]

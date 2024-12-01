@@ -140,9 +140,6 @@ def descargar_ventas(request):
 def clientes(request):
     return render(request, "clientes.html")
 
-def registrar_cliente(request):
-    return render(request, "cliente/registrar_cliente.html")
-
 def consultar_clientes(request):
     clientes = Cliente.objects.all().order_by("id_cliente")
 
@@ -162,6 +159,57 @@ def descargar_clientes(request):
     response["Content-Disposition"] = "attachment; filename=clientes.xml"
 
     return response
+
+@csrf_exempt
+def registrar_clientes(request):
+    if not request.method == "POST":
+        return HttpResponse("Metodo incorrecto!", status=400)
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Cliente.validar_dtd(xml_etree=xml, dtd_path="app_rosa/static/dtd/cliente/registrar_cliente.dtd")
+        print(valido)
+        Cliente.registrar_clientes_desde_xml(xml_etree=xml)
+
+        return HttpResponse(valido, status=200)
+    
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
+
+@csrf_exempt
+def eliminar_clientes(request):
+    if not request.method == "DELETE":
+        return HttpResponse("Metodo incorrecto!", status=400)
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Cliente.validar_dtd(xml_etree=xml, dtd_path="app_rosa/static/dtd/cliente/eliminar_cliente.dtd")
+
+        Cliente.eliminar_clientes_desde_xml(xml_tree=xml)
+
+        return HttpResponse(valido, status=200)
+    
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
+    
+@csrf_exempt
+def modificar_clientes(request):
+    if not request.method == "PATCH":
+        return HttpResponse("Metodo incorrecto!", status=400)
+    
+    try:
+        xml = etree.fromstring( request.body )
+        valido = Cliente.validar_dtd(xml_etree=xml, dtd_path="app_rosa/static/dtd/cliente/modificar_cliente.dtd")
+
+        print(valido)
+
+        Cliente.modificar_clientes_desde_xml(xml_tree=xml)
+
+        return HttpResponse(valido, status=200)
+    
+    except Exception as e:
+        return HttpResponse(str(repr(e)), status=400)
+
 
 #-------inventario-------
 

@@ -198,3 +198,53 @@ class Cliente(models.Model):
             )
 
         return cliente_raiz
+    
+    @classmethod
+    def validar_dtd(cls, xml_etree, dtd_path):
+        dtd = etree.DTD(open(dtd_path, "rb"))
+
+        try:
+            dtd.assertValid(xml_etree)
+
+            print("dtd valido")
+
+            return True
+        except Exception:
+            error_trace = ""
+            for error in dtd.error_log:
+                print(error)
+                error_trace += f"Line {error.line}: {error.message}."
+
+            raise Exception(error_trace)
+        
+    @classmethod
+    def registrar_clientes_desde_xml(cls, xml_etree):
+        with transaction.atomic():
+            for cliente in xml_etree:
+                cliente = cls.objects.create(
+                    nombre=cliente[0].text,
+                    email=cliente[1].text,
+                    telefono=str(cliente[2].text),
+                    direccion=cliente[3].text
+                )
+
+                cliente.save()
+
+    @classmethod
+    def eliminar_clientes_desde_xml(cls, xml_tree):
+        with transaction.atomic():
+            for id in xml_tree:
+                cls.objects.filter(id_cliente=id.text).delete()
+
+    @classmethod
+    def modificar_clientes_desde_xml(cls, xml_tree):
+        with transaction.atomic():
+            for customer in xml_tree:
+                cliente = cls.objects.filter(id_cliente=customer[0].text)[0]
+
+                cliente.nombre = str(customer.find("nombre").text) if customer.find("nombre") is not None else cliente.nombre
+                cliente.email = str(customer.find("email").text) if customer.find("email") is not None else cliente.email
+                cliente.telefono = str(customer.find("telefono").text) if customer.find("telefono") is not None else cliente.telefono
+                cliente.direccion = str(customer.find("direccion").text) if customer.find("direccion") is not None else cliente.direccion
+
+                cliente.save()
