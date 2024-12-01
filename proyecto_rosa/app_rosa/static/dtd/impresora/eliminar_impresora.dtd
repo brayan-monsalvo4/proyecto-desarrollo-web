@@ -1,0 +1,2 @@
+<!ELEMENT impresoras (id_impresora+)>
+<!ELEMENT id_impresora (#PCDATA)>

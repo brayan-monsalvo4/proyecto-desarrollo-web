@@ -1,0 +1,12 @@
+<!ELEMENT impresoras (impresora+)>
+<!ELEMENT impresora (id_impresora, nombre, marca, tipo, anio_lanzamiento, volumen_construccion, precio, moneda, url_imagen, stock)>
+<!ELEMENT id_impresora (#PCDATA)>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT marca (#PCDATA)>
+<!ELEMENT tipo (#PCDATA)>
+<!ELEMENT anio_lanzamiento (#PCDATA)>
+<!ELEMENT volumen_construccion (#PCDATA)>
+<!ELEMENT precio (#PCDATA)>
+<!ELEMENT moneda (#PCDATA)>
+<!ELEMENT url_imagen (#PCDATA)>
+<!ELEMENT stock (#PCDATA)>
