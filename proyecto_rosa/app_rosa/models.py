@@ -112,3 +112,25 @@ class Cliente(models.Model):
 
     #def get_monto_total_compras(self):
     #    return self.venta_set.aggregate(total=models.Sum('total'))['total'] or 0
+
+    def to_xml(self):
+        cliente = etree.Element("cliente")
+
+        etree.SubElement(cliente, "id_cliente").text = str(self.id_cliente)
+        etree.SubElement(cliente, "nombre").text = self.nombre
+        etree.SubElement(cliente, "email").text = self.nombre
+        etree.SubElement(cliente, "telefono").text = self.telefono
+        etree.SubElement(cliente, "direccion").text = self.direccion
+
+        return cliente
+    
+    @classmethod
+    def get_xml_collection(cls, clientes):
+        cliente_raiz = etree.Element("clientes")
+
+        for cliente in clientes:
+            cliente_raiz.append(
+                cliente.to_xml()
+            )
+
+        return cliente_raiz

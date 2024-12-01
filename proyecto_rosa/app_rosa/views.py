@@ -149,6 +149,17 @@ def consultar_clientes(request):
     
     return render(request, "clientes/consultar_clientes.html", context)
 
+def descargar_clientes(request):
+    if not request.method == "GET":
+        return render(request, "clientes/consultar_clientes.html")
+    
+    raiz = Cliente.get_xml_collection( clientes=Cliente.objects.all() )
+
+    response = HttpResponse(etree.tostring(raiz, pretty_print=True, encoding="utf-8", xml_declaration=True), content_type="application/xml")
+    response["Content-Disposition"] = "attachment; filename=clientes.xml"
+
+    return response
+
 #-------inventario-------
 
 def inventario(request):
