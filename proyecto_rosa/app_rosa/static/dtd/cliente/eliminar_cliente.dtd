@@ -1,0 +1,2 @@
+<!ELEMENT clientes (id_cliente+)>
+<!ELEMENT id_cliente (#PCDATA)>
